@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minha Vitrine Shopee | Achadinhos e Ofertas</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    * { transition: background-color 0.2s ease, border-color 0.2s ease; }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen flex flex-col antialiased">
+
+  <!-- HEADER BANNER -->
+  <header class="bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-6 md:py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
+        <div class="relative">
+          <img id="profile-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Avatar" class="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-white shadow-lg object-cover">
+          <span class="absolute bottom-0 right-0 bg-emerald-500 border-2 border-white rounded-full p-1 text-white" title="Perfil Verificado">
+            <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+          </span>
+        </div>
+        <div>
+          <div class="flex items-center justify-center md:justify-start gap-2">
+            <h1 id="profile-name" class="text-2xl md:text-3xl font-extrabold tracking-tight">Achadinhos da Shopee</h1>
+            <span class="bg-orange-700/60 text-xs px-2.5 py-0.5 rounded-full font-medium border border-orange-400/40">Afiliado Oficial</span>
+          </div>
+          <p id="profile-bio" class="text-orange-100 text-sm mt-1 max-w-md">As melhores ofertas, promoções diárias e cupons exclusivos selecionados para você!</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
+    <!-- BARRA DE BUSCA -->
+    <div class="sticky top-2 z-20 bg-white/90 backdrop-blur-md rounded-2xl p-3 shadow-md mb-6 border border-gray-100">
+      <div class="relative flex-grow">
+        <i data-lucide="search" class="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        <input type="text" id="search-input" placeholder="Buscar produtos, lojas ou ofertas..." class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+      </div>
+      <div id="categories-container" class="flex gap-2 overflow-x-auto no-scrollbar pt-3 mt-1 border-t border-gray-100"></div>
+    </div>
+
+    <div class="flex items-center justify-between mb-4 px-1">
+      <h2 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+        <i data-lucide="sparkles" class="w-5 h-5 text-orange-500"></i>
+        <span id="section-title">Produtos e Lojas em Destaque</span>
+      </h2>
+      <span id="product-count" class="text-xs text-gray-500 font-medium">0 itens</span>
+    </div>
+
+    <!-- GRADE DE PRODUTOS (5 COLUNAS NO DESKTOP, 2 NO MOBILE) -->
+    <div id="products-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 lg:gap-5"></div>
+
+    <!-- ESTADO VAZIO -->
+    <div id="empty-state" class="hidden flex-col items-center justify-center py-16 text-center">
+      <div class="w-16 h-16 bg-orange-100 text-orange-500 rounded-full flex items-center justify-center mb-4">
+        <i data-lucide="shopping-bag" class="w-8 h-8"></i>
+      </div>
+      <h3 class="text-lg font-bold text-gray-800">Nenhum item encontrado</h3>
+      <p class="text-gray-500 text-sm mt-1 max-w-xs">Tente buscar por outro termo ou selecione outra categoria.</p>
+    </div>
+
+    <!-- PAGINAÇÃO (MAX 4 LINHAS x 5 COLUNAS = 20 ITENS POR PÁGINA) -->
+    <div id="pagination-container" class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+      <div class="text-xs text-gray-500 font-medium">
+        Exibindo <span id="page-start" class="font-bold text-gray-800">1</span> a <span id="page-end" class="font-bold text-gray-800">20</span> de <span id="page-total-items" class="font-bold text-gray-800">0</span> produtos
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="btn-prev-page" onclick="changePage(-1)" class="flex items-center gap-1 px-3 py-2 bg-gray-100 hover:bg-orange-500 hover:text-white disabled:opacity-40 text-gray-700 text-xs font-bold rounded-xl transition">
+          <i data-lucide="chevron-left" class="w-4 h-4"></i> Anterior
+        </button>
+        <div id="pagination-numbers" class="flex items-center gap-1"></div>
+        <button id="btn-next-page" onclick="changePage(1)" class="flex items-center gap-1 px-3 py-2 bg-gray-100 hover:bg-orange-500 hover:text-white disabled:opacity-40 text-gray-700 text-xs font-bold rounded-xl transition">
+          Próximo <i data-lucide="chevron-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Produtos do CSV BatchProductLinks20261022121314 (Shopee Afiliados, 22/10/2026).
+    // image: cole o endereço da foto do produto (na Shopee, botão direito na foto > Copiar endereço da imagem).
+    //        Vazio = mostra o ícone da categoria.
+    const products = [
+      {"id": "58269809706", "title": "Boné Brasil Bordado Alto Relevo Qualidade Premium", "category": "Moda & Acessórios", "store": "Bella Chic Store", "price": 69.90, "sales": "336", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820ma-mtyfzpajej9c0b.webp", "link": "https://s.shopee.com.br/4fxBwWD7XY"},
+      {"id": "55260497129", "title": "Kit Estética Automotiva Vonixx V-Floc Tok Final Intense 240ml Pneu Pretinho Pano Pincel E Aplicador", "category": "Automotivo", "store": "Yamase Loja Oficial", "price": 119.92, "sales": "5mil+", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820lt-mqhpbloq1q0x0e.webp", "link": "https://s.shopee.com.br/4qGc8pCUCb"},
+      {"id": "46560301686", "title": "Comedouro e Bebedouro Automático para Gatos e Cães Premium 1L Jelplast", "category": "Pet", "store": "Select Life", "price": 60.90, "sales": "307", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820ma-mo396acb8ttwdd.webp", "link": "https://s.shopee.com.br/50a2L8Bqre"},
+      {"id": "27845945422", "title": "Soprador Térmico 2000W Até 600°C 110V-220V Ar Quente 2 Estágios Temperatura SparkBr Profissional", "category": "Ferramentas", "store": "SPARK BR", "price": 99.99, "sales": "1mil+", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820m8-mtdy7aox6c5f08.webp", "link": "https://s.shopee.com.br/5AtSXRBDWh"},
+      {"id": "58260485680", "title": "Boné Brasil 22 Bordado Premium Aba Curva Ajustável Amarelo Unissex", "category": "Moda & Acessórios", "store": "Bella Chic Store", "price": 59.00, "sales": "1mil+", "image": "https://down-bs-br.img.susercontent.com/sg-11134201-825a0-msa0cayukop39b.webp", "link": "https://s.shopee.com.br/2gC7YqKjbE"},
+      {"id": "55105409650", "title": "Painel Pegboard Organizador Setup Gamer 59x35 + Brindes", "category": "Casa & Decoração", "store": "EXBIAN FERRAMENTAS", "price": 53.06, "sales": "800", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820lf-mopsi23ckykg14.webp", "link": "https://s.shopee.com.br/2qVXl9K6GH"},
+      {"id": "41584717212", "title": "Kit Sousplast Jogo Americano Caminho De Mesa Natalino Natal Mesa Posta Sofisticação Sublimação Digital Tecido Premium", "category": "Casa & Decoração", "store": "ARTE DIGITAL EM TECIDOS", "price": 27.90, "sales": "134", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820m9-mttmiteg9dds35.webp", "link": "https://s.shopee.com.br/30oxxSJSvK"},
+      {"id": "56564570357", "title": "Nova capa de telefone de vidro fosco iPhone 18 17 16 15 14 13 12 11 Pro Max resistente a choques resistente a arranhões", "category": "Eletrônicos", "store": "TuTuCase.br", "price": 17.50, "sales": "3mil+", "image": "https://down-bs-br.img.susercontent.com/sg-11134201-82583-mujk8rpry5mt1e.webp", "link": "https://s.shopee.com.br/3B8O9lIpaN"},
+      {"id": "46555441248", "title": "Óculos de Sol Espotivo Premium Edição Limitada Baixa Pace Ciclismo Corrida VerãoTendencia uv400", "category": "Moda & Acessórios", "store": "Fortuna Sunglasses", "price": 59.99, "sales": "765", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820mf-mn5w0chbbvnk63.webp", "link": "https://s.shopee.com.br/3LRoM4ICFQ"},
+      {"id": "55702430893", "title": "Revitalizador de farol remove amarelado e aspecto fosco", "category": "Automotivo", "store": "RC PEÇAS AUTOMOTIVAS", "price": 16.00, "sales": "80mil+", "image": "https://down-bs-br.img.susercontent.com/br-11134207-81z1k-mht87kjg5b7qd2.webp", "link": "https://s.shopee.com.br/3VlEYNHYuT"},
+      {"id": "23194398000", "title": "Copo Termico inox Personalizado Time Brasileiros + Seu Nome gravação a laser", "category": "Cozinha", "store": "X Print", "price": 38.98, "sales": "5mil+", "image": "https://down-bs-br.img.susercontent.com/sg-11134201-824g5-mej2joz7xlvn9e.webp", "link": "https://s.shopee.com.br/3g4ekgGvZW"},
+      {"id": "58200560185", "title": "Bomba de Ar Calibrador Digital Portátil Recarregável com Powerbank Compressor Elétrico para carro, moto, bicicleta", "category": "Automotivo", "store": "Invention Hunters", "price": 59.75, "sales": "5mil+", "image": "https://down-bs-br.img.susercontent.com/br-11134207-81z1k-mgz1ko75qj2d95.webp", "link": "https://s.shopee.com.br/3qO4wzGIEZ"},
+      {"id": "58216167487", "title": "Bota Coturno Masculino Adventure De Qualidade e Barato Mega Oferta", "category": "Moda & Acessórios", "store": "HF_LOJA_3", "price": 49.80, "sales": "3mil+", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820ma-mruiyl5o5hj8dc.webp", "link": "https://s.shopee.com.br/6fiGKC5VU8"},
+      {"id": "18699254225", "title": "Creatina Monohidratada Pura 300g Dark Lab - 100% Pura", "category": "Saúde & Fitness", "store": "Dark Lab Oficial", "price": 39.90, "sales": "100mil+", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820l8-ms0du9lcw8p1d3.webp", "link": "https://s.shopee.com.br/6q1gWV4s9B"},
+      {"id": "57717240116", "title": "Árvore de Natal 1,50cm 400 Galhos Pinheiro Verde Resistente Desmontável Pé de Ferro e Plástico", "category": "Casa & Decoração", "store": "98 Produtos", "price": 78.99, "sales": "512", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820lh-msn53tgvj952b7.webp", "link": "https://s.shopee.com.br/70L6io4EoE"},
+      {"id": "22797412872", "title": "Balança Corporal Bioimpedância Profissional Bluetooth", "category": "Saúde & Fitness", "store": "ZSZ_SHOP", "price": 30.00, "sales": "20mil+", "image": "https://down-bs-br.img.susercontent.com/sg-11134201-7rcdt-lt6ul9keg9hf19.webp", "link": "https://s.shopee.com.br/7AeWv73bTH"},
+      {"id": "23894374388", "title": "Mini Power Bank Portátil Carregador 2 em 1 de Bolso USB-C Compacto", "category": "Eletrônicos", "store": "RC - CINTOS E ACESSÓRIOS", "price": 32.99, "sales": "121", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820la-msps4ulywqh00b.webp", "link": "https://s.shopee.com.br/7Kxx7Q2y8K"},
+      {"id": "58217601055", "title": "Parafusadeira Furadeira 25V Nakasaki Sem Fio a Bateria Profissional Kit Completo com Maleta", "category": "Ferramentas", "store": "MAQ TOOLS", "price": 89.99, "sales": "3mil+", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820lt-msq8pkzchmh355.webp", "link": "https://s.shopee.com.br/7VHNJj2KnN"},
+      {"id": "58263968484", "title": "Snow Foam Puverizador Para Lavagem Automotiva Limpeza De Carro Moto Detalhamento", "category": "Automotivo", "store": "Depsy", "price": 39.90, "sales": "3mil+", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820ls-mt6uu841aznrd6.webp", "link": "https://s.shopee.com.br/7fanW21hSQ"},
+      {"id": "58262424128", "title": "Seringa Insulina 0,5ml Fixa Agulha Fina Ultrafina 0,30mm x 8mm Graduada Estéril Descartável 50ui", "category": "Saúde & Fitness", "store": "TRE-MAX E COMMERCE SOLUTION", "price": 26.52, "sales": "2mil+", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820l4-mscv9hdlihvr29.webp", "link": "https://s.shopee.com.br/7puDiL147T"},
+      // Lote a3.csv (22/10/2026)
+      {"id": "58257789013", "title": "Omeleteira Agratto Mr Cheff Inox Redonda 127v / 220v", "category": "Cozinha", "store": "Acabay", "price": 115.90, "sales": "1mil+", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820ll-mmc8h9uyaoee6b.webp", "link": "https://s.shopee.com.br/20wQvv2nrn"},
+      {"id": "22294171220", "title": "Kit 5 Tigelas de Vidro RedondasTampas Herméticas Potes Cozinha e Armazenamento", "category": "Cozinha", "store": "Bhz Store ltda", "price": 24.90, "sales": "2mil+", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820ld-mneflf3ilw5ed6.webp", "link": "https://s.shopee.com.br/1qd0jc3RCm"},
+      {"id": "53616416772", "title": "Toalha Banhão Gigante E Rosto 100% Algodão Alta Absorção Toque Macio Aveludada Enxuga Bem Wave Habitat", "category": "Casa & Decoração", "store": "Fonte Boa Casa", "price": 19.90, "sales": "5mil+", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820mb-ms5l9in9msqt7f.webp", "link": "https://s.shopee.com.br/1gJaXJ44Xl"},
+      {"id": "22797891574", "title": "Enfeite De Natal Globo De Neve Vidro 8cm Decoração Natalina", "category": "Casa & Decoração", "store": "Loja Prolar", "price": 29.99, "sales": "1mil+", "image": "https://down-bs-br.img.susercontent.com/sg-11134201-8257y-mtsbpfu4wglh58.webp", "link": "https://s.shopee.com.br/1W0AL04hsk"},
+      {"id": "23098944281", "title": "QUEIMA DE ESTOQUE - Mesa de Jantar Quadrada Industrial – Design de Madeira p/ 4 Lugares", "category": "Casa & Decoração", "store": "decorexpress521", "price": 180.45, "sales": "663", "image": "https://down-bs-br.img.susercontent.com/br-11134207-81z1k-mf3vq9d3vxtx8d.webp", "link": "https://s.shopee.com.br/1Lgk8h5LDj"},
+      {"id": "23698786124", "title": "Garrafa Inox Térmica Com Capinha Protetora De Silicone Antiderrapante", "category": "Cozinha", "store": "XQW - ELETRÔNICOS E VARIEDADES", "price": 31.99, "sales": "9mil+", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820m5-mt00jk3e0eme7b.webp", "link": "https://s.shopee.com.br/3qO57Hvp9E"},
+      {"id": "58262957321", "title": "Fone de Ouvido Bluetooth Sem Fio J760- Cancelamento de Ruído Conforto", "category": "Eletrônicos", "store": "𝙨𝙝𝙤𝙥𝙚 𝙨𝙩𝙮𝙡𝙚", "price": 40.98, "sales": "10mil+", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820m2-muks5cpdw26ab8.webp", "link": "https://s.shopee.com.br/3g4euywSUD"},
+      {"id": "22396383290", "title": "Kit Balão Bexiga Ano Novo 2027 + Numero Metalizado + Branco + Cristal Decoração", "category": "Casa & Decoração", "store": "Ferfestt", "price": 25.90, "sales": "1mil+", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820m5-mpc6q0gpq1om25.webp", "link": "https://s.shopee.com.br/3VlEifx5pC"},
+      {"id": "22694204664", "title": "Cozedor De Ovos Portátil Elétrico Cozinha A Vapor 110v/220v", "category": "Cozinha", "store": "PENGFA TECH LTDA", "price": 29.98, "sales": "100mil+", "image": "https://down-bs-br.img.susercontent.com/br-11134207-7r98o-mbxi2wd1amvtfc.webp", "link": "https://s.shopee.com.br/3LRoWMxjAB"},
+      {"id": "23294917833", "title": "Caneca Misturadora Elétrica Magnética Automática Mixer Café Leite Chocolate Copo Aço Inox com Tampa utiliza 2 pilhas AA", "category": "Cozinha", "store": "Rio Shop Bazar", "price": 33.80, "sales": "3mil+", "image": "https://down-bs-br.img.susercontent.com/sg-11134201-8261u-mlwhtrhm4oox46.webp", "link": "https://s.shopee.com.br/3B8OK3yMVA"},
+      {"id": "22898199528", "title": "Parafusadeira e Furadeira c 2 Baterias + Maleta ou Parafusadeira c Jogo de Ferramentas Profissional", "category": "Ferramentas", "store": "QUALITYBRIDGE", "price": 69.99, "sales": "147", "image": "https://down-bs-br.img.susercontent.com/br-11134207-7r98o-m95035ynuhvmda.webp", "link": "https://s.shopee.com.br/30oy7kyzq9"},
+      {"id": "58262972685", "title": "Massageador de Pescoço e Ombros Portátil 3D Com Calor Relaxante Massagem Profunda", "category": "Saúde & Fitness", "store": "XQW - ELETRÔNICOS E VARIEDADES", "price": 102.99, "sales": "1mil+", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820mb-mps6km6k5xc1fc.webp", "link": "https://s.shopee.com.br/2qVXvRzdB8"},
+      {"id": "54857767078", "title": "Jogo de Panelas Variadas 10 Peças - Marfim.", "category": "Cozinha", "store": "A.R.S Alumínios", "price": 197.99, "sales": "9mil+", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820lh-mpm9dmjlux36be.webp", "link": "https://s.shopee.com.br/2gC7j90GW7"},
+      {"id": "23698384152", "title": "Bicicleta Bike Ergometrica Spinning Academia Fitness Profissional 120kg", "category": "Saúde & Fitness", "store": "SINBER OFICIAL", "price": 449.95, "sales": "50mil+", "image": "https://down-bs-br.img.susercontent.com/br-11134207-7r98o-m8dq90menppta0.webp", "link": "https://s.shopee.com.br/5AtShjqkRc"},
+      {"id": "22098878065", "title": "Chinelo Bandeirinha Original Sandalia De Dedo Unissex Verão. Presente para o Dia dos Pais", "category": "Moda & Acessórios", "store": "Ferrari_Shopping", "price": 19.90, "sales": "100mil+", "image": "https://down-bs-br.img.susercontent.com/sg-11134201-824hw-me1mqqajx1c73f.webp", "link": "https://s.shopee.com.br/50a2VQrNmb"},
+      {"id": "22499247158", "title": "Carregador Portátil Mini Power Bank 10000mAh Com 02 Saídas Tipo-C / Lightning", "category": "Eletrônicos", "store": "SHR ELETRONICOS", "price": 31.99, "sales": "10mil+", "image": "https://down-bs-br.img.susercontent.com/sg-11134201-81zvk-mik9ovwbhszk62.webp", "link": "https://s.shopee.com.br/4qGcJ7s17a"},
+      {"id": "22199262533", "title": "Fone de ouvido Wireless sem fio Bluetooth 760BT Microfone Pure Bass Cancelamento Ativo de Ruído Mp3", "category": "Eletrônicos", "store": "ModajdFeminina", "price": 39.55, "sales": "818", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820m1-mtdw9dzq5vcw6e.webp", "link": "https://s.shopee.com.br/4fxC6oseSZ"},
+      {"id": "45868320453", "title": "Garrafa Térmica Nórdica Berlim Café 1L Cabo De Madeira Luxo Mesa Posta Canelado Dourado", "category": "Cozinha", "store": "MLTX GROUP", "price": 54.90, "sales": "698", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820l8-mtfqfhd5f1tu1b.webp", "link": "https://s.shopee.com.br/4VdluVtHnY"},
+      {"id": "58217712620", "title": "Portable Air Pump Compressor Inflator Multi-function 4 in 1 PowerBank 8kmah Battery Car Auto Tire Inflator", "category": "Automotivo", "store": "Mini Casa Store", "price": 77.89, "sales": "11", "image": "https://down-bs-br.img.susercontent.com/br-11134207-820lc-msao4kkbz5zb62.webp", "link": "https://s.shopee.com.br/4LKLiCtv8X"},
+      {"id": "58265472733", "title": "Maquina De Cortar Cabelo Kemei 2299 Profissional Aparador De Barba Sem Fio Acabamento Bivolt", "category": "Beleza & Cuidados", "store": "Rivirla variedades", "price": 79.99, "sales": "264", "image": "https://down-bs-br.img.susercontent.com/sg-11134201-8258y-mrft69acxoudea.webp", "link": "https://s.shopee.com.br/4B0vVtuYTW"}
+    ];
+
+    // Ícone mostrado no lugar da foto quando o produto ainda não tem image
+    const categoryIcons = {
+      "Moda & Acessórios": "shirt",
+      "Casa & Decoração": "home",
+      "Cozinha": "chef-hat",
+      "Automotivo": "car",
+      "Eletrônicos": "smartphone",
+      "Ferramentas": "wrench",
+      "Saúde & Fitness": "heart-pulse",
+      "Beleza & Cuidados": "scissors",
+      "Pet": "paw-print"
+    };
+
+    const ITEMS_PER_PAGE = 20;
+    let currentPage = 1;
+    let currentCategory = "Todas";
+    let searchQuery = "";
+
+    // Categorias saem dos próprios produtos, para não sobrar aba vazia
+    const categories = ["Todas", ...Object.keys(categoryIcons).filter(cat => products.some(p => p.category === cat))];
+
+    const formatBRL = value => `R$ ${value.toFixed(2).replace('.', ',')}`;
+
+    // Busca ignora maiúsculas, acentos e letras estilizadas (ex.: 𝙨𝙝𝙤𝙥𝙚 → shope)
+    const normalize = text => text.normalize("NFKD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderCategories();
+      renderProducts();
+      document.getElementById("search-input").addEventListener("input", (e) => {
+        searchQuery = normalize(e.target.value);
+        currentPage = 1;
+        renderProducts();
+      });
+      lucide.createIcons();
+    });
+
+    function renderCategories() {
+      const container = document.getElementById("categories-container");
+      container.innerHTML = categories.map(cat => `
+        <button onclick="setCategory('${cat}')" class="px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap ${currentCategory === cat ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-600'}">${cat}</button>
+      `).join('');
+    }
+
+    function setCategory(cat) {
+      currentCategory = cat;
+      currentPage = 1;
+      renderCategories();
+      renderProducts();
+    }
+
+    function renderImage(p) {
+      if (p.image) {
+        return `<img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy">`;
+      }
+      return `
+        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-orange-50 to-amber-100 text-orange-400">
+          <i data-lucide="${categoryIcons[p.category] || 'shopping-bag'}" class="w-12 h-12"></i>
+        </div>`;
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById("products-grid");
+      const filtered = products.filter(p => {
+        const matchesCategory = currentCategory === "Todas" || p.category === currentCategory;
+        const matchesSearch = normalize(p.title).includes(searchQuery) || normalize(p.store).includes(searchQuery);
+        return matchesCategory && matchesSearch;
+      });
+
+      document.getElementById("product-count").textContent = `${filtered.length} item(ns)`;
+
+      const emptyState = document.getElementById("empty-state");
+      emptyState.classList.toggle("hidden", filtered.length > 0);
+      emptyState.classList.toggle("flex", filtered.length === 0);
+      document.getElementById("pagination-container").classList.toggle("hidden", filtered.length === 0);
+
+      const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE) || 1;
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+      const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, filtered.length);
+      const paginatedItems = filtered.slice(startIndex, endIndex);
+
+      grid.innerHTML = paginatedItems.map(p => `
+        <div class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm flex flex-col justify-between group p-3">
+          <div class="relative aspect-square overflow-hidden rounded-xl bg-gray-100 mb-2">
+            ${renderImage(p)}
+            <span class="absolute top-2 left-2 bg-white/90 text-gray-700 font-bold text-[10px] px-2 py-0.5 rounded-full">${p.sales} vendidos</span>
+          </div>
+          <div>
+            <h3 class="text-xs font-semibold text-gray-800 line-clamp-2 mb-1" title="${p.title}">${p.title}</h3>
+            <p class="text-[10px] text-gray-500 flex items-center gap-1 mb-2 truncate">
+              <i data-lucide="store" class="w-3 h-3 shrink-0"></i> ${p.store}
+            </p>
+            <span class="text-base font-black text-orange-600 block mb-2">${p.price > 0 ? formatBRL(p.price) : 'Ver Oferta'}</span>
+            <a href="${p.link}" target="_blank" rel="noopener" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs py-2 rounded-xl flex items-center justify-center gap-1">
+              <i data-lucide="shopping-cart" class="w-4 h-4"></i> Ver na Shopee
+            </a>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById("page-start").textContent = filtered.length > 0 ? startIndex + 1 : 0;
+      document.getElementById("page-end").textContent = endIndex;
+      document.getElementById("page-total-items").textContent = filtered.length;
+      document.getElementById("btn-prev-page").disabled = currentPage === 1;
+      document.getElementById("btn-next-page").disabled = currentPage === totalPages;
+
+      renderPaginationNumbers(totalPages);
+      lucide.createIcons();
+    }
+
+    function renderPaginationNumbers(totalPages) {
+      const container = document.getElementById("pagination-numbers");
+      let html = "";
+      for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+          html += `<button onclick="goToPage(${i})" class="w-8 h-8 rounded-xl text-xs font-bold ${currentPage === i ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-600'}">${i}</button>`;
+        } else if (i === currentPage - 2 || i === currentPage + 2) {
+          html += `<span class="text-gray-400 text-xs px-1">...</span>`;
+        }
+      }
+      container.innerHTML = html;
+    }
+
+    function changePage(dir) {
+      currentPage += dir;
+      renderProducts();
+      window.scrollTo({ top: 200, behavior: 'smooth' });
+    }
+
+    function goToPage(page) {
+      currentPage = page;
+      renderProducts();
+      window.scrollTo({ top: 200, behavior: 'smooth' });
+    }
+
+  </script>
+</body>
+</html>
