@@ -43,6 +43,7 @@ O que o visitante pode fazer:
 | arquivo | o que é |
 |---|---|
 | `index.html` | a vitrine inteira: layout, lista de produtos e código da página |
+| `avatar.jpg` | mascote do topo da página (recorte de 256 × 256 px da arte original, ~17 KB) |
 | `preview.jpg` | arte de divulgação usada na prévia do link (WhatsApp, Instagram) |
 | `README.md` | este documento |
 
@@ -233,3 +234,5 @@ Separei 40 ofertas em um só lugar: omeleteira, fone Bluetooth, garrafa térmica
 | 22/10/2026 | Segundo lote, com mais 20 produtos (`a3.csv`), e as categorias novas Cozinha e Beleza & Cuidados. |
 | 22/10/2026 | Publicação no GitHub Pages, sem comissão e sem painel admin. |
 | 22/10/2026 | Prévia do link com a arte de divulgação (`preview.jpg`) e ícone 🛍️ na aba. |
+| 22/10/2026 | README do projeto. |
+| 22/10/2026 | Avatar do topo trocado pelo mascote (`avatar.jpg`), no lugar da foto genérica. |
