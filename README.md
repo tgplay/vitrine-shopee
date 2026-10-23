@@ -317,3 +317,4 @@ Separei 40 ofertas em um só lugar: omeleteira, fone Bluetooth, garrafa térmica
 | 22/10/2026 | README do projeto e avatar trocado pelo mascote (`avatar.jpg`). |
 | 23/10/2026 | Reorganização em `produtos.js`, `config.js` e `app.js`; aviso de afiliado; filtros Mais vendidos, Até R$ 30 e Novidades; botão Compartilhar; páginas de campanha (11.11 e Black Friday); contador GoatCounter; importador de CSV. |
 | 23/10/2026 | Contador GoatCounter ligado (`tiago-martins`, depois renomeado para `achadinhos`). |
+| 23/10/2026 | Texto do topo trocado por «Achadinhos selecionados todos os dias para você!», sem a promessa de cupons. |

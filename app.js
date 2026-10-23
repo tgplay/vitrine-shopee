@@ -101,7 +101,7 @@
                 <a href="${base || "./"}" class="text-2xl md:text-3xl font-extrabold tracking-tight">Achadinhos da Shopee</a>
                 <span class="bg-orange-700/60 text-xs px-2.5 py-0.5 rounded-full font-medium border border-orange-400/40">Afiliado Oficial</span>
               </div>
-              <p class="text-orange-100 text-sm mt-1 max-w-md">As melhores ofertas, promoções diárias e cupons exclusivos selecionados para você!</p>
+              <p class="text-orange-100 text-sm mt-1 max-w-md">Achadinhos selecionados todos os dias para você!</p>
             </div>
           </div>
         </div>
