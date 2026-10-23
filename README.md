@@ -174,8 +174,8 @@ Cada campanha tem uma página com link e prévia próprios:
 O site usa o [GoatCounter](https://www.goatcounter.com), que é gratuito para site pessoal ou pequeno
 negócio, não usa cookies e não exige aviso de privacidade.
 
-**Ligado desde 23/10/2026**, com o painel em https://tiago-martins.goatcounter.com (`goatcounter:
-"tiago-martins"` em `config.js`). Se o campo ficar vazio, nada é carregado nem contado.
+**Ligado desde 23/10/2026**, com o painel em https://achadinhos.goatcounter.com (`goatcounter:
+"achadinhos"` em `config.js`). Se o campo ficar vazio, nada é carregado nem contado.
 
 **Para não contar as suas próprias visitas:** abra uma vez, em cada navegador e celular que você usa,
 `https://tgplay.github.io/vitrine-shopee/#toggle-goatcounter`. O GoatCounter passa a ignorar aquele
@@ -316,4 +316,4 @@ Separei 40 ofertas em um só lugar: omeleteira, fone Bluetooth, garrafa térmica
 | 22/10/2026 | Prévia do link com a arte de divulgação (`preview.jpg`) e ícone 🛍️ na aba. |
 | 22/10/2026 | README do projeto e avatar trocado pelo mascote (`avatar.jpg`). |
 | 23/10/2026 | Reorganização em `produtos.js`, `config.js` e `app.js`; aviso de afiliado; filtros Mais vendidos, Até R$ 30 e Novidades; botão Compartilhar; páginas de campanha (11.11 e Black Friday); contador GoatCounter; importador de CSV. |
-| 23/10/2026 | Contador GoatCounter ligado (`tiago-martins`). |
+| 23/10/2026 | Contador GoatCounter ligado (`tiago-martins`, depois renomeado para `achadinhos`). |

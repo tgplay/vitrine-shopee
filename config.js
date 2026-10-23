@@ -5,7 +5,7 @@ window.VITRINE_CONFIG = {
   // Contador de visitas e cliques (GoatCounter, gratuito e sem cookies).
   // Crie a conta em https://www.goatcounter.com e cole aqui o código escolhido:
   // "achadinhos" para https://achadinhos.goatcounter.com. Vazio = sem contador.
-  goatcounter: "tiago-martins",
+  goatcounter: "achadinhos",
 
   // Campanhas: cada uma tem uma página em <chave>/index.html.
   // Um produto entra na campanha com "campaigns": ["<chave>"] em produtos.js.
