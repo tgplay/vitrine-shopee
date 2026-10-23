@@ -44,6 +44,14 @@
 
   const state = { category: "Todas", quick: "todos", search: "", page: 1 };
 
+  // Em Destaques, a ordem é sorteada uma vez por visita: cada produto tem a mesma chance de aparecer
+  // na primeira página, e a ordem não muda ao trocar de página ou de categoria (Fisher-Yates).
+  const featuredOrder = pool.map((p, index) => ({ p, index }));
+  for (let i = featuredOrder.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [featuredOrder[i], featuredOrder[j]] = [featuredOrder[j], featuredOrder[i]];
+  }
+
   const formatBRL = value => `R$ ${value.toFixed(2).replace(".", ",")}`;
 
   // Busca ignora maiúsculas, acentos e letras estilizadas (ex.: 𝙨𝙝𝙤𝙥𝙚 → shope)
@@ -200,7 +208,7 @@
   // ---------- Lista de produtos ----------
 
   function currentList() {
-    let list = pool.map((p, index) => ({ p, index }));
+    let list = state.quick === "todos" ? featuredOrder.slice() : pool.map((p, index) => ({ p, index }));
     if (state.category !== "Todas") list = list.filter(({ p }) => p.category === state.category);
     if (state.search) {
       list = list.filter(({ p }) => normalize(p.title).includes(state.search) || normalize(p.store).includes(state.search));

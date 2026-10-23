@@ -36,7 +36,7 @@ O que o visitante pode fazer:
 | recurso | como funciona |
 |---|---|
 | Busca | procura no nome do produto e da loja, sem diferenciar maiúsculas, acentos ou letras estilizadas (𝙨𝙝𝙤𝙥𝙚 = shope) |
-| Filtros rápidos | ✨ Destaques (ordem da lista), 🔥 Mais vendidos, 💸 Até R$ 30 (do mais barato ao mais caro), 🆕 Novidades (entrada mais recente primeiro) |
+| Filtros rápidos | ✨ Destaques (ordem sorteada a cada visita), 🔥 Mais vendidos, 💸 Até R$ 30 (do mais barato ao mais caro), 🆕 Novidades (entrada mais recente primeiro) |
 | Categorias | abas geradas a partir dos produtos: só aparece categoria que tem produto. Combinam com os filtros rápidos |
 | Paginação | 20 produtos por página (4 linhas de 5 no computador, 2 colunas no celular) |
 | Ver na Shopee | abre o link de afiliado em outra aba |
@@ -282,6 +282,7 @@ Separei 40 ofertas em um só lugar: omeleteira, fone Bluetooth, garrafa térmica
 | **Produtos em `produtos.js`, código em `app.js`** | as páginas de campanha reaproveitam os mesmos produtos e o mesmo código, e o importador mexe só nos dados. |
 | **Uma página HTML por campanha** | o WhatsApp e o Instagram não rodam JavaScript ao montar a prévia; cada campanha só tem título e arte próprios se tiver um HTML próprio. |
 | **Compartilhar manda o link de afiliado** | quem recebe vai direto ao produto, e a comissão continua sendo sua; o link da vitrine vai junto para quem quiser ver mais. |
+| **Destaques em ordem sorteada a cada visita** | sem o sorteio, quem abre o site vê sempre os mesmos 20 primeiros e a página 2 quase não é vista. O sorteio é feito uma vez por visita, então a ordem não muda ao trocar de página ou de categoria; os outros filtros mantêm a própria ordem. |
 | **GoatCounter como contador** | gratuito, sem cookies e sem aviso de privacidade; também registra cliques. |
 | **Sem painel admin e sem `localStorage`** | o painel antigo expunha as comissões e só valia no navegador de quem clicava; com o `localStorage`, visitantes antigos viam produtos velhos. |
 | **Fotos direto do servidor da Shopee** | o CSV não traz imagem, e a Shopee bloqueia a leitura automática do produto; as fotos são coladas à mão e a Shopee permite exibi-las fora do site dela. |
@@ -318,3 +319,4 @@ Separei 40 ofertas em um só lugar: omeleteira, fone Bluetooth, garrafa térmica
 | 23/10/2026 | Reorganização em `produtos.js`, `config.js` e `app.js`; aviso de afiliado; filtros Mais vendidos, Até R$ 30 e Novidades; botão Compartilhar; páginas de campanha (11.11 e Black Friday); contador GoatCounter; importador de CSV. |
 | 23/10/2026 | Contador GoatCounter ligado (`tiago-martins`, depois renomeado para `achadinhos`). |
 | 23/10/2026 | Texto do topo trocado por «Achadinhos selecionados todos os dias para você!», sem a promessa de cupons. |
+| 23/10/2026 | Destaques passam a ter a ordem sorteada a cada visita. |
