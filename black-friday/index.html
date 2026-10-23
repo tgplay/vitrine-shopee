@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Black Friday | Achadinhos da Shopee</title>
+  <meta name="description" content="Achadinhos selecionados para a Black Friday de 27/11. Clique e veja todos!">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛍️</text></svg>">
+  <!-- Prévia do link no WhatsApp, Instagram e outras redes -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Achadinhos da Shopee">
+  <meta property="og:title" content="Black Friday | Achadinhos da Shopee">
+  <meta property="og:description" content="Achadinhos selecionados para a Black Friday de 27/11. Clique e veja todos!">
+  <meta property="og:url" content="https://tgplay.github.io/vitrine-shopee/black-friday/">
+  <meta property="og:image" content="https://tgplay.github.io/vitrine-shopee/preview.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="928">
+  <meta property="og:image:height" content="1152">
+  <meta property="og:image:alt" content="Arte Achadinhos da Shopee com produtos e preços">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    * { transition: background-color 0.2s ease, border-color 0.2s ease; }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen antialiased">
+  <div id="app" class="flex flex-col min-h-screen"></div>
+  <noscript><p style="padding:16px">Ative o JavaScript para ver os achadinhos.</p></noscript>
+
+  <!-- base: caminho até a raiz do site; campaign: chave da campanha em config.js -->
+  <script>window.VITRINE_PAGE = { base: "../", campaign: "black-friday" };</script>
+  <script src="../config.js"></script>
+  <script src="../produtos.js"></script>
+  <script src="../app.js"></script>
+</body>
+</html>
